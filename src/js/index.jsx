@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import Web3, { providers } from 'web3'
 import TruffleContract from 'truffle-contract'
-import SponsorTokenArtifact from '../../build/contracts/SponsorToken.json'
+import DecentralizedExchangeArtifact from '../../build/contracts/DecentralizedExchange.json'
 
 import App from './containers'
 import { HTTP_PROVIDER_URL } from './api'
@@ -18,8 +18,8 @@ if (typeof window.web3 !== 'undefined') {
 }
 
 const web3 = new Web3(provider)
-const SponsorToken = TruffleContract(SponsorTokenArtifact)
-SponsorToken.setProvider(provider)
+const DecentralizedExchange = TruffleContract(DecentralizedExchangeArtifact)
+DecentralizedExchange.setProvider(provider)
 
 let stInstance
 
@@ -32,7 +32,7 @@ web3.eth.getAccounts(function (error, accounts) {
   const account = accounts[0]
   console.log('account', account)
 
-  SponsorToken.deployed().then(function (instance) {
+  DecentralizedExchange.deployed().then(function (instance) {
     stInstance = instance
 
     return stInstance.name.call()

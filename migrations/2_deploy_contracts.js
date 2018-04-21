@@ -1,5 +1,5 @@
-var SponsorToken = artifacts.require('./SponsorToken');
+var DecentralizedExchange = artifacts.require('./DecentralizedExchange');
 
 module.exports = function(deployer) {
-  deployer.deploy(SponsorToken);
+  deployer.deploy(DecentralizedExchange);
 };
