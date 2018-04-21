@@ -5,7 +5,8 @@ import Web3, { providers } from 'web3'
 import TruffleContract from 'truffle-contract'
 import SponsorTokenArtifact from '../../build/contracts/SponsorToken.json'
 
-import App from './containers/app'
+import App from './containers'
+import { HTTP_PROVIDER_URL } from './api'
 
 let provider
 
@@ -13,7 +14,7 @@ if (typeof window.web3 !== 'undefined') {
   provider = window.web3.currentProvider
 } else {
   // set the provider you want from Web3.providers
-  provider = new providers.HttpProvider('http://localhost:8545')
+  provider = new providers.HttpProvider(HTTP_PROVIDER_URL)
 }
 
 const web3 = new Web3(provider)
