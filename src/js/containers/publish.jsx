@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAccounts, getInstance } from '../web3'
+import { web3, getAccounts, getInstance } from '../web3'
 
 export class Publish extends Component {
   constructor(props) {
@@ -20,19 +20,20 @@ export class Publish extends Component {
     await this.setStateAsync({ loading: true })
     const title = this.titleInput.current.value
     const desc = this.descInput.current.value
-    const price = this.priceInput.current.value
+    let price = this.priceInput.current.value
     if (!title || !desc || !price) {
       alert('Please input title / desc / price field!')
     } else {
-      const _price = parseFloat(price)
-      if (!_price) {
+      price = parseFloat(price)
+      if (!price) {
         alert('Invalid price!')
       } else {
         const accounts = await getAccounts()
         const instance = await getInstance()
         try {
+          const priceWei = web3.toWei(price, 'ether')
           // address _issuer, uint256 _tokenId, uint256 _price, string _title, string _desc
-          const tx = await instance.put(accounts[1], 1, price, title, desc, {
+          const tx = await instance.put(accounts[1], 1, priceWei, title, desc, {
             gas: 6721975
           })
           alert('Published! tx: ' + tx.tx)

@@ -20,6 +20,7 @@ export class App extends Component {
   }
   async componentDidMount() {
     const instance = await getInstance()
+    const accounts = await getAccounts()
     this.setState({
       loading: false,
     })

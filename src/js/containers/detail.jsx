@@ -25,7 +25,8 @@ export class Detail extends Component {
     const order = {
       id: i,
       owner: _order[0],
-      price: _order[1].toNumber(),
+      priceWei: _order[1],
+      price: web3.fromWei(_order[1], 'ether').toString(),
       issuer: _order[2],
       tokenId: _order[3],
       title: _order[4],
@@ -38,12 +39,13 @@ export class Detail extends Component {
   }
   async onBuy() {
     await this.setStateAsync({ buying: true })
+    const { order } = this.state
     try {
       const instance = await getInstance()
       const account = await getAccount()
-      const tx = await instance.buy(this.state.order.id, {
+      const tx = await instance.buy(order.id, {
         gas: 6721975,
-        value: web3.toWei(this.state.order.price, 'ether'),
+        value: order.priceWei,
       })
       console.log(tx)
     } catch (e) {

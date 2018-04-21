@@ -21,7 +21,8 @@ export class Store extends Component {
       orders.push({
         id: i,
         owner: order[0],
-        price: order[1].toNumber(),
+        priceWei: order[1],
+        price: web3.fromWei(order[1], 'ether').toString(),
         issuer: order[2],
         tokenId: order[3],
         title: order[4],
