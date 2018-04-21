@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>CryptoBay</title>
+
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./css/form.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+          <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="./index.html" class="navbar-brand d-flex align-items-center">
+                <strong>CryptoBay</strong>
+                </a>
+                <a class="btn btn-outline-warning" href="./form.html">Publish</a>
+            </div>
+          </div>
+        </header>
+        <main role="main">
+          <div class="py-5 bg-light">
+            <div class="container">
+              <h1>Publish</h1>
+              <br/>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">Title</span>
+                    </div>
+                    <input type="text" class="form-control form-title" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1">
+                  </div>
+<!--                   <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon2">Description</span>
+                    </div>
+                    <input type="text" class="form-control form-title" placeholder="Description" aria-label="Description" aria-describedby="basic-addon2">
+                  </div> -->
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Description</span>
+                    </div>
+                    <textarea class="form-control" aria-label="Description" placeholder="Description"></textarea>
+                  </div>
+                  <br/>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon3">Price</span>
+                    </div>
+                    <input type="text" class="form-control form-title" placeholder="0.1" aria-label="Price" aria-describedby="basic-addon3">
+                    <div class="input-group-append">
+                      <span class="input-group-text">ETH</span>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+    </div>
+  <!-- <script type="text/javascript" src="./js/assets/bundle.js"></script> -->
+</body>
+</html>
