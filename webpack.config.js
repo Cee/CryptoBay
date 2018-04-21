@@ -4,6 +4,7 @@ const path = require('path')
 
 const publicPath = path.join(__dirname, 'public')
 const config = {
+  mode: process.env.NODE_ENV,
   entry: './src/js/app.js',
   devtool: process.env.NODE_ENV === 'production' ? false : 'eval',
   output: {
