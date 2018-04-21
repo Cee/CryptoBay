@@ -1,8 +1,11 @@
-'use strict'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 import Web3, { providers } from 'web3'
 import TruffleContract from 'truffle-contract'
-import AdoptionArtifact from '../../build/contracts/SponsorToken.json'
+import SponsorTokenArtifact from '../../build/contracts/SponsorToken.json'
+
+import App from './containers/app'
 
 let provider
 
@@ -14,7 +17,7 @@ if (typeof window.web3 !== 'undefined') {
 }
 
 const web3 = new Web3(provider)
-const SponsorToken = TruffleContract(AdoptionArtifact)
+const SponsorToken = TruffleContract(SponsorTokenArtifact)
 SponsorToken.setProvider(provider)
 
 let stInstance
@@ -25,13 +28,12 @@ web3.eth.getAccounts(function (error, accounts) {
     return
   }
 
-  var account = accounts[0]
+  const account = accounts[0]
   console.log('account', account)
 
   SponsorToken.deployed().then(function (instance) {
     stInstance = instance
 
-    // Execute adopt as a transaction by sending account
     return stInstance.name.call()
   }).then(function (result) {
     console.log('result', result)
@@ -39,3 +41,5 @@ web3.eth.getAccounts(function (error, accounts) {
     console.error(err)
   })
 })
+
+ReactDOM.render(<App />, document.getElementById('app'))
