@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { getAccount, getInstance } from '../web3'
+import { web3, getAccount, getInstance } from '../web3'
 import { Loading } from '../components'
 
 export class Detail extends Component {
@@ -20,9 +20,8 @@ export class Detail extends Component {
   async componentDidMount() {
     const instance = await getInstance()
     const i = parseInt(this.props.match.params.id)
-    const _order = await instance.getOrder(i)
     // address _owner, uint256 _price, address _issuer, uint256 _tokenId, string _title, string _desc
-    console.log(_order)
+    const _order = await instance.getOrder(i)
     const order = {
       id: i,
       owner: _order[0],
@@ -44,7 +43,7 @@ export class Detail extends Component {
       const account = await getAccount()
       const tx = await instance.buy(this.state.order.id, {
         gas: 6721975,
-        value: this.state.order.price,
+        value: web3.toWei(this.state.order.price, 'ether'),
       })
       console.log(tx)
     } catch (e) {

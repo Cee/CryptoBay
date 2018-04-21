@@ -36,6 +36,9 @@ export class Publish extends Component {
             gas: 6721975
           })
           alert('Published! tx: ' + tx.tx)
+          this.titleInput.current.value = ''
+          this.descInput.current.value = ''
+          this.priceInput.current.value = ''
         } catch (e) {
           alert('Publish failed: ' + e.message)
         }
