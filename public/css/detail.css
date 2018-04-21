@@ -1,0 +1,16 @@
+#detail .item-title {
+	font-size: bold;
+	font-size: 300%;
+}
+
+#detail .item-desc {
+	margin-top: -10px;
+	color: gray;
+	font-size: 150%;
+}
+
+#detail .item-buy {
+	height: 40px;
+	border-radius: 20px;
+	line-height: 30px;
+}

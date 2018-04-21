@@ -1,0 +1,16 @@
+.heading {
+    font-weight: 300;
+}
+
+.text-muted {
+    color: #6c757d!important;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+.main-section {
+    margin-top: 20%;
+}

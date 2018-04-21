@@ -1,0 +1,13 @@
+#store .item-title {
+	font-size: bold;
+}
+#store .item-desc {
+	color: gray;
+	font-weight: 100;
+}
+
+#store .card-img-top {
+	display: block;
+	width: 100%;
+	height: 225px;
+}
