@@ -1,25 +1,25 @@
 pragma solidity ^0.4.21;
 /// @author MinakoKojima (https://github.com/lychees)
 
-contract DecentralizedExchange{
+contract DecentralizedExchange {
 
   address public owner;
   mapping (address => bool) public admins;
-  
+
   struct Order {
     address owner;
     uint256 price;
     address issuer;
     uint256 tokenId;
     string title;
-    string desc;  
-  }  
+    string desc;
+  }
   Order[] private orderBook;
   uint256 private orderBookSize;
 
   function DecentralizedExchange() public {
     owner = msg.sender;
-    admins[owner] = true;    
+    admins[owner] = true;
   }
 
   /* Modifiers */
@@ -48,7 +48,7 @@ contract DecentralizedExchange{
 
   /* Withdraw */
   function withdrawAll () onlyAdmins() public {
-   msg.sender.transfer(address(this).balance);
+    msg.sender.transfer(address(this).balance);
   }
 
   function withdrawAmount (uint256 _amount) onlyAdmins() public {
@@ -60,7 +60,7 @@ contract DecentralizedExchange{
   function name() public pure returns (string _name) {
     return "Crypto Bay";
   }
-  
+
   /* Read */
   function isAdmin(address _admin) public view returns (bool _isAdmin) {
     return admins[_admin];
@@ -71,20 +71,20 @@ contract DecentralizedExchange{
   function getOrder(uint256 _id) public view returns (address _owner, uint256 _price, address _issuer, uint256 _tokenId, string _title, string _desc) {
     return (orderBook[_id].owner, orderBook[_id].price, orderBook[_id].issuer, orderBook[_id].tokenId, orderBook[_id].title, orderBook[_id].desc);
   }
-  
+
   /* Util */
   function isContract(address addr) internal view returns (bool) {
     uint size;
     assembly { size := extcodesize(addr) } // solium-disable-line
     return size > 0;
-  }  
-  
+  }
+
   /* Buy */
-  
+
   function put(address _issuer, uint256 _tokenId, uint256 _price, string _title, string _desc) public {
-    Issuer issuer = Issuer(_issuer);
-    require(issuer.ownerOf(_tokenId) == msg.sender);
-    issuer.transferFrom(msg.sender, address(this), _tokenId);
+    // Issuer issuer = Issuer(_issuer);
+    // require(issuer.ownerOf(_tokenId) == msg.sender);
+    // issuer.transferFrom(msg.sender, address(this), _tokenId);
     if (orderBookSize == orderBook.length) {
       orderBook.push(Order(msg.sender, _price, _issuer, _tokenId, _title, _desc));
     } else {
@@ -92,30 +92,30 @@ contract DecentralizedExchange{
     }
     orderBookSize += 1;
   }
-  function buy(uint256 _id) public payable{
+  function buy(uint256 _id) public payable {
     require(_id < orderBookSize);
     require(msg.value >= orderBook[_id].price);
-    require(!isContract(msg.sender));    
+    require(!isContract(msg.sender));
     orderBook[_id].owner.transfer(orderBook[_id].price*97/100); // 3% Cut-off
     if (msg.value > orderBook[_id].price) {
         msg.sender.transfer(msg.value - orderBook[_id].price);
     }
     Issuer issuer = Issuer(orderBook[_id].issuer);
-    issuer.transfer(msg.sender, orderBook[_id].tokenId);    
+    issuer.transfer(msg.sender, orderBook[_id].tokenId);
     orderBook[_id] = orderBook[orderBookSize-1];
-    orderBookSize -= 1;    
+    orderBookSize -= 1;
   }
   function revoke(uint256 _id) public {
     require(msg.sender == orderBook[_id].owner);
     Issuer issuer = Issuer(orderBook[_id].issuer);
-    issuer.transfer(msg.sender, orderBook[_id].tokenId);    
+    issuer.transfer(msg.sender, orderBook[_id].tokenId);
     orderBook[_id] = orderBook[orderBookSize-1];
     orderBookSize -= 1;
   }
 }
 
 interface Issuer {
-  function transferFrom(address _from, address _to, uint256 _tokenId) external;  
+  function transferFrom(address _from, address _to, uint256 _tokenId) external;
   function transfer(address _to, uint256 _tokenId) external;
   function ownerOf (uint256 _tokenId) external view returns (address _owner);
 }

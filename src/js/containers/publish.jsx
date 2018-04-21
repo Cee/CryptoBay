@@ -1,6 +1,48 @@
 import React, { Component } from 'react'
+import { getAccounts, getInstance } from '../web3'
 
 export class Publish extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false,
+    }
+    this.titleInput = React.createRef()
+    this.descInput = React.createRef()
+    this.priceInput = React.createRef()
+  }
+  setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve)
+    })
+  }
+  async onSubmit() {
+    await this.setStateAsync({ loading: true })
+    const title = this.titleInput.current.value
+    const desc = this.descInput.current.value
+    const price = this.priceInput.current.value
+    if (!title || !desc || !price) {
+      alert('Please input title / desc / price field!')
+    } else {
+      const _price = parseFloat(price)
+      if (!_price) {
+        alert('Invalid price!')
+      } else {
+        const accounts = await getAccounts()
+        const instance = await getInstance()
+        try {
+          // address _issuer, uint256 _tokenId, uint256 _price, string _title, string _desc
+          const tx = await instance.put(accounts[1], 1, price, title, desc, {
+            gas: 6721975
+          })
+          alert('Published! tx: ' + tx.tx)
+        } catch (e) {
+          alert('Publish failed: ' + e.message)
+        }
+      }
+    }
+    await this.setStateAsync({ loading: false })
+  }
   render() {
     return (
       <div className="py-5 bg-light">
@@ -13,25 +55,28 @@ export class Publish extends Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon1">Title</span>
                 </div>
-                <input type="text" className="form-control form-title" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" />
+                <input ref={this.titleInput} type="text" className="form-control form-title" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" />
               </div>
               <div className="input-group">
                 <div className="input-group-prepend">
                   <span className="input-group-text">Description</span>
                 </div>
-                <textarea className="form-control" aria-label="Description" placeholder="Description"></textarea>
+                <textarea ref={this.descInput} className="form-control" aria-label="Description" placeholder="Description"></textarea>
               </div>
               <br/>
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon3">Price</span>
                 </div>
-                <input type="text" className="form-control form-title" placeholder="0.1" aria-label="Price" aria-describedby="basic-addon3" />
+                <input ref={this.priceInput} type="text" className="form-control form-title" placeholder="0.1" aria-label="Price" aria-describedby="basic-addon3" />
                 <div className="input-group-append">
                   <span className="input-group-text">ETH</span>
                 </div>
               </div>
-              <button type="button" className="btn btn-primary">Submit</button>
+              <button type="button"
+                className="btn btn-primary"
+                disabled={this.state.loading}
+                onClick={this.onSubmit.bind(this)}>Submit</button>
             </div>
           </div>
         </div>
