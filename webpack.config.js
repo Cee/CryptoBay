@@ -7,6 +7,7 @@ const config = {
   entry: './src/js/app.js',
   output: {
     filename: 'bundle.js',
+    publicPath: 'js/assets',
     path: path.join(publicPath, 'js/assets'),
   },
   devServer: {
