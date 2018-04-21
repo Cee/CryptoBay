@@ -20,12 +20,24 @@ DecentralizedExchange.setProvider(provider)
 let stInstance = null
 let account = null
 
+export function getBalance(address) {
+  return new Promise((resolve, reject) => {
+    web3.eth.getBalance(address, function (err, balance) {
+      if (err) {
+        return reject(err)
+      }
+      resolve(balance)
+    })
+  })
+}
+
 export function getAccounts() {
   return new Promise((resolve, reject) => {
     web3.eth.getAccounts(function (err, accounts) {
       if (err) {
         return reject(err)
       }
+      web3.eth.defaultAccount = web3.eth.coinbase
       DecentralizedExchange.web3.eth.defaultAccount = DecentralizedExchange.web3.eth.coinbase
       account = accounts[0]
       resolve(accounts)
