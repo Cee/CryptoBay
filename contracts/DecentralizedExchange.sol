@@ -83,9 +83,9 @@ contract DecentralizedExchange {
   /* Buy */
 
   function put(address _issuer, uint256 _tokenId, uint256 _price, string _title, string _desc) public {
-    Issuer issuer = Issuer(_issuer);
-    require(issuer.ownerOf(_tokenId) == msg.sender);
-    issuer.transferFrom(msg.sender, address(this), _tokenId);
+    // Issuer issuer = Issuer(_issuer);
+    // require(issuer.ownerOf(_tokenId) == msg.sender);
+    // issuer.transferFrom(msg.sender, address(this), _tokenId);
     if (orderBookSize == orderBook.length) {
       orderBook.push(Order(msg.sender, _price, _issuer, _tokenId, _title, _desc, now));
     } else {
@@ -96,13 +96,13 @@ contract DecentralizedExchange {
   function buy(uint256 _id) public payable {
     require(_id < orderBookSize);
     require(msg.value >= orderBook[_id].price);
-    require(!isContract(msg.sender));
+    // require(!isContract(msg.sender));
     orderBook[_id].owner.transfer(orderBook[_id].price*97/100); // 3% Cut-off
     if (msg.value > orderBook[_id].price) {
         msg.sender.transfer(msg.value - orderBook[_id].price);
     }
-    Issuer issuer = Issuer(orderBook[_id].issuer);
-    issuer.transfer(msg.sender, orderBook[_id].tokenId);
+    // Issuer issuer = Issuer(orderBook[_id].issuer);
+    // issuer.transfer(msg.sender, orderBook[_id].tokenId);
     orderBook[_id] = orderBook[orderBookSize-1];
     orderBookSize -= 1;
   }
