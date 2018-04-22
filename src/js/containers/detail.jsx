@@ -43,7 +43,6 @@ export class Detail extends Component {
     const { order } = this.state
     try {
       const instance = await getInstance()
-      const account = await getAccount()
       const tx = await instance.buy(order.id, {
         gas: 6721975,
         value: order.priceWei,

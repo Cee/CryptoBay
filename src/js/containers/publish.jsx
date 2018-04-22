@@ -40,6 +40,7 @@ export class Publish extends Component {
           const priceWei = web3.toWei(price, 'ether')
           // address _issuer, uint256 _tokenId, uint256 _price, string _title, string _desc
           const tx = await instance.put(accounts[1], 1, priceWei, title, desc, {
+            from: accounts[1],
             gas: 6721975
           })
           this.titleInput.current.value = ''
