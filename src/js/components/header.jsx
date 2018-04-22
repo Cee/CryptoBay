@@ -23,7 +23,7 @@ export class Header extends Component {
               <strong>CryptoBay</strong>
             </a>
             <span>
-              <span className="balance">{ balance ? `${balance} ETH` : null }</span>&nbsp;
+              <span className="balance">{ balance ? `Balance: ${balance} ETH` : null }</span>&nbsp;
               <a className="btn btn-outline-warning" href="/publish">Publish</a>
             </span>
           </div>
