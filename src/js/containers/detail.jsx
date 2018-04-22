@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { web3, getAccount, getInstance } from '../web3'
-import { Loading } from '../components'
+import { Loading, Modal } from '../components'
 
 export class Detail extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ export class Detail extends Component {
       buying: false,
       order: {},
     }
+    this.modal = React.createRef()
   }
   setStateAsync(state) {
     return new Promise((resolve) => {
@@ -47,9 +48,16 @@ export class Detail extends Component {
         gas: 6721975,
         value: order.priceWei,
       })
-      console.log(tx)
+      this.modal.current.show('Success', (
+        <p>
+          Buy success!<br />
+          <span style={{fontSize: '10px', color: '#ccc'}}>tx: {tx.tx}</span>
+        </p>
+      ))
     } catch (e) {
-      alert('Error: ' + e.message)
+      this.modal.current.show('Error', (
+        <p>Publish failed:<br />{e.message}</p>
+      ))
     }
     await this.setStateAsync({ buying: false })
   }
@@ -76,6 +84,7 @@ export class Detail extends Component {
             </div>
           </div>
         </div>
+        <Modal id="detail-modal" ref={this.modal} />
       </div>
     )
   }

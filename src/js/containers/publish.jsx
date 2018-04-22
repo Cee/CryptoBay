@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { web3, getAccounts, getInstance } from '../web3'
+import { Modal } from '../components'
 
 export class Publish extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export class Publish extends Component {
     this.titleInput = React.createRef()
     this.descInput = React.createRef()
     this.priceInput = React.createRef()
+    this.modal = React.createRef()
   }
   setStateAsync(state) {
     return new Promise((resolve) => {
@@ -22,11 +24,15 @@ export class Publish extends Component {
     const desc = this.descInput.current.value
     let price = this.priceInput.current.value
     if (!title || !desc || !price) {
-      alert('Please input title / desc / price field!')
+      this.modal.current.show('Error', (
+        <p>Please input title / desc / price field!</p>
+      ))
     } else {
       price = parseFloat(price)
       if (!price) {
-        alert('Invalid price!')
+        this.modal.current.show('Error', (
+          <p>Invalid price!</p>
+        ))
       } else {
         const accounts = await getAccounts()
         const instance = await getInstance()
@@ -36,12 +42,19 @@ export class Publish extends Component {
           const tx = await instance.put(accounts[1], 1, priceWei, title, desc, {
             gas: 6721975
           })
-          alert('Published! tx: ' + tx.tx)
           this.titleInput.current.value = ''
           this.descInput.current.value = ''
           this.priceInput.current.value = ''
+          this.modal.current.show('Success', (
+            <p>
+              Publish success!<br />
+              <span style={{fontSize: '10px', color: '#ccc'}}>tx: {tx.tx}</span>
+            </p>
+          ))
         } catch (e) {
-          alert('Publish failed: ' + e.message)
+          this.modal.current.show('Error', (
+            <p>Publish failed:<br />{e.message}</p>
+          ))
         }
       }
     }
@@ -84,6 +97,7 @@ export class Publish extends Component {
             </div>
           </div>
         </div>
+        <Modal id="publish-modal" ref={this.modal} />
       </div>
     )
   }
