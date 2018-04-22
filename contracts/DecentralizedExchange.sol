@@ -82,9 +82,9 @@ contract DecentralizedExchange {
   /* Buy */
 
   function put(address _issuer, uint256 _tokenId, uint256 _price, string _title, string _desc) public {
-    // Issuer issuer = Issuer(_issuer);
-    // require(issuer.ownerOf(_tokenId) == msg.sender);
-    // issuer.transferFrom(msg.sender, address(this), _tokenId);
+    Issuer issuer = Issuer(_issuer);
+    require(issuer.ownerOf(_tokenId) == msg.sender);
+    issuer.transferFrom(msg.sender, address(this), _tokenId);
     if (orderBookSize == orderBook.length) {
       orderBook.push(Order(msg.sender, _price, _issuer, _tokenId, _title, _desc));
     } else {
