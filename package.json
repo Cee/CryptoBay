@@ -4,6 +4,7 @@
   "description": "",
   "main": "truffle-config.js",
   "dependencies": {
+    "moment": "^2.22.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-router": "^4.2.0",

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 
 import { web3, getInstance } from '../web3'
 import { Loading } from '../components'
@@ -11,8 +12,12 @@ export class Store extends Component {
       orders: [],
     }
   }
-  async componentDidMount() {
-    const instance = await getInstance()
+  setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve)
+    })
+  }
+  async refershInterval(instance) {
     const totalOrderCount = (await instance.totalOrder()).toNumber()
     const orders = []
     for (let i = 0; i < totalOrderCount; i++) {
@@ -27,12 +32,25 @@ export class Store extends Component {
         tokenId: order[3],
         title: order[4],
         desc: order[5],
+        timestamp: order[6].toNumber(),
       })
     }
-    this.setState({
+    await this.setStateAsync({
       loading: false,
       orders,
     })
+  }
+  async refresh() {
+    const instance = await getInstance()
+    this._t = window.setInterval(() => {
+      this.refershInterval(instance)
+    }, 1000)
+  }
+  async componentDidMount() {
+    await this.refresh()
+  }
+  componentWillUnmount() {
+    window.clearInterval(this._t)
   }
   render() {
     if (this.state.loading) {
@@ -56,7 +74,7 @@ export class Store extends Component {
                         <div className="btn-group">
                           <a className="btn btn-sm btn-outline-secondary item-buy" href={'/detail/' + order.id}>Buy at { order.price } ETH</a>
                         </div>
-                        <small className="item-ordered-time" className="text-muted">9 mins</small>
+                        <small className="item-ordered-time" className="text-muted">{ moment(order.timestamp * 1000).fromNow() }</small>
                       </div>
                     </div>
                   </div>

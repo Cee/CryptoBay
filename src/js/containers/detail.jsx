@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 
 import { web3, getAccount, getInstance } from '../web3'
 import { Loading, Modal } from '../components'
@@ -32,6 +33,7 @@ export class Detail extends Component {
       tokenId: _order[3],
       title: _order[4],
       desc: _order[5],
+      timestamp: _order[6].toNumber(),
     }
     this.setState({
       loading: false,
@@ -79,7 +81,7 @@ export class Detail extends Component {
               <p className="card-text item-desc">{ order.desc }</p>
               <p className="card-text item-owner">Owned by: <a href={'#' + order.owner}>{ order.owner }</a></p>
               <button className="btn btn-sm btn-outline-secondary item-buy" onClick={this.onBuy.bind(this)}>Buy at { order.price } ETH</button>&nbsp;
-              <small className="item-ordered-time" className="text-muted">Published: 9 mins ago</small>
+              <small className="item-ordered-time" className="text-muted">Published at: { moment(order.timestamp * 1000).fromNow() }</small>
             </div>
           </div>
         </div>

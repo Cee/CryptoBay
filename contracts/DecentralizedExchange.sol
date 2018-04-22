@@ -13,6 +13,7 @@ contract DecentralizedExchange {
     uint256 tokenId;
     string title;
     string desc;
+    uint256 timestamp;
   }
   Order[] private orderBook;
   uint256 private orderBookSize;
@@ -68,8 +69,8 @@ contract DecentralizedExchange {
   function totalOrder() public view returns (uint256 _totalOrder) {
     return orderBookSize;
   }
-  function getOrder(uint256 _id) public view returns (address _owner, uint256 _price, address _issuer, uint256 _tokenId, string _title, string _desc) {
-    return (orderBook[_id].owner, orderBook[_id].price, orderBook[_id].issuer, orderBook[_id].tokenId, orderBook[_id].title, orderBook[_id].desc);
+  function getOrder(uint256 _id) public view returns (address _owner, uint256 _price, address _issuer, uint256 _tokenId, string _title, string _desc, uint256 timestamp) {
+    return (orderBook[_id].owner, orderBook[_id].price, orderBook[_id].issuer, orderBook[_id].tokenId, orderBook[_id].title, orderBook[_id].desc, orderBook[_id].timestamp);
   }
 
   /* Util */
@@ -86,9 +87,9 @@ contract DecentralizedExchange {
     require(issuer.ownerOf(_tokenId) == msg.sender);
     issuer.transferFrom(msg.sender, address(this), _tokenId);
     if (orderBookSize == orderBook.length) {
-      orderBook.push(Order(msg.sender, _price, _issuer, _tokenId, _title, _desc));
+      orderBook.push(Order(msg.sender, _price, _issuer, _tokenId, _title, _desc, now));
     } else {
-      orderBook[orderBookSize] = Order(msg.sender, _price, _issuer, _tokenId, _title, _desc);
+      orderBook[orderBookSize] = Order(msg.sender, _price, _issuer, _tokenId, _title, _desc, now);
     }
     orderBookSize += 1;
   }
